@@ -1,0 +1,195 @@
+/* Chat container styling */
+.chatContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Chat screen styling */
+.chatScreen {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 600px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Chat header styling */
+.chatHeader {
+  background-color: #007bff;
+  color: #ffffff;
+  text-align: center;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Messages container styling */
+.chatMessagesContainer {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background-color: #f9f9fb;
+  scrollbar-width: thin;
+  scrollbar-color: #d1d1d1 #f9f9fb;
+}
+
+.chatMessagesContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatMessagesContainer::-webkit-scrollbar-thumb {
+  background-color: #d1d1d1;
+  border-radius: 5px;
+}
+
+/* Input container styling */
+.chatInputContainer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #ffffff;
+}
+
+.chatInputContainer input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chatInputContainer input:focus {
+  border-color: #007bff;
+}
+
+.chatInputContainer button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chatInputContainer button:hover {
+  background-color: #0056b3;
+}
+
+/* Messages styling (example messages for dynamic implementation) */
+.chatMessage {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.chatMessage.user {
+  justify-content: flex-end;
+}
+
+.chatMessageContent {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.chatMessage.user .chatMessageContent {
+  background-color: #007bff;
+  color: #ffffff;
+  border-top-right-radius: 0;
+}
+
+.chatMessage.bot .chatMessageContent {
+  background-color: #e0e0e0;
+  color: #333333;
+  border-top-left-radius: 0;
+}
+
+.userMessage,
+.aiMessage {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Align user messages to the right and AI messages to the left */
+.userMessage {
+  justify-content: flex-end;
+}
+
+.aiMessage {
+  justify-content: flex-start;
+}
+
+/* Message bubble content */
+.userMessage div,
+.aiMessage div {
+  max-width: 70%;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  position: relative;
+}
+
+/* User message styling */
+.aiMessage div {
+  background-color: #007bff; /* Blue background for user */
+  color: white;
+  border-top-right-radius: 0; /* Round left corner */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* AI message styling */
+.userMessage div {
+  background-color: #e0e0e0; /* Light gray background for AI */
+  color: #333333;
+  border-top-left-radius: 0; /* Round right corner */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Optional message tail (triangle) */
+.aiMessage div::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #007bff; /* Tail for user messages */
+}
+
+.userMessage div::before {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #e0e0e0; /* Tail for AI messages */
+}
+
+/* Optional hover effect on messages */
+.userMessage div:hover,
+.aiMessage div:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
