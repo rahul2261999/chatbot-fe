@@ -4,14 +4,54 @@ import socket from "../../helper/socket";
 import Constant from "../../constant/constant";
 
 const initialState = {
+  authorization: {
+    verified: false,
+    token: '',
+  },
   loader: true,
   messageList: [],
   form: {
     userMessage: "",
   },
 };
+
 const ChatScreen = () => {
   const [state, setState] = useState(initialState);
+
+  const handleAiMessage = (event) => receiveAiMessageEventHandler(event.detail);
+
+  const authTokenInputHandler = (event) => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        authorization: {
+          ...prevState.authorization,
+          token: event.target.value,
+        },
+      };
+    });
+  };
+
+  const onAuthorize = () => {
+    socket.init(state.authorization.token);
+
+    connectEventHandler();
+
+    document.addEventListener(
+      Constant.Socket_Reciever_Event.AI_MESSAGE_SENT,
+      handleAiMessage
+    );
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        authorization: {
+          ...prevState.authorization,
+          verified: true,
+        },
+      };
+    });
+  };
 
   const connectEventHandler = () => {
     setState({
@@ -23,8 +63,8 @@ const ChatScreen = () => {
   const sendMessageEventHandler = () => {
     const userMessage = state.form.userMessage;
 
-    if(userMessage.length === 0){
-      return
+    if (userMessage.length === 0) {
+      return;
     }
 
     socket.sendMessage(userMessage);
@@ -61,21 +101,9 @@ const ChatScreen = () => {
   };
 
   useEffect(() => {
-    console.log("use effect called");
-    socket.init();
-
-    connectEventHandler();
-
-    const handleAiMessage = (event) =>
-      receiveAiMessageEventHandler(event.detail);
-
-    document.addEventListener(
-      Constant.Socket_Reciever_Event.AI_MESSAGE_SENT,
-      handleAiMessage
-    );
-
     // Cleanup function: remove event listeners
     return () => {
+      console.log("ChatScreen cleanup........");
       document.removeEventListener(
         Constant.Socket_Reciever_Event.AI_MESSAGE_SENT,
         handleAiMessage
@@ -94,6 +122,29 @@ const ChatScreen = () => {
       },
     });
   };
+
+  if (!state.authorization.verified && state.loader) {
+    return (
+      <div className={styles.authorizationModelOverlay}>
+        <div className={styles.authorizationModelContainer}>
+          <input
+            type="text"
+            className={styles.authorizationModelInput}
+            name="token"
+            value={state.authorization.token}
+            placeholder="Enter your details"
+            onChange={authTokenInputHandler}
+          />
+          <button
+            className={styles.authorizationModelButton}
+            onClick={onAuthorize}
+          >
+            Authorriation Key
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const messagesList = state.messageList.map((message, index) => {
     return (

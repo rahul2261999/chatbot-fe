@@ -23,7 +23,11 @@ class Socket {
     });
   }
 
-  init() {
+  init(token) {
+    this.#socket.auth = {
+      token,
+    };
+
     if (!this.#connectionEstablished) {
       console.log("init socket");
       this.#socket.connect();
@@ -39,9 +43,17 @@ class Socket {
         console.log("socket disconnected");
       });
 
+      this.#socket.on("error", () => {
+        console.log("socket error");
+      })
+
+      this.#socket.on("connect_error", (error) => {
+        console.error("Connection error:", error.message); // Logs the connection error
+      })
+
       this.receiveMessage();
 
-      this.#connectionEstablished = true
+      this.#connectionEstablished = true;
     }
   }
 
