@@ -1,8 +1,9 @@
 import "./App.css";
-import ChatScreen from "./components/chatscreen/chatscreen";
+import Home from "./components/Home/home";
+import './styles/globals.css'
 
 function App() {
-  return <ChatScreen />;
+  return <Home />;
 }
 
 export default App;

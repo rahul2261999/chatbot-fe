@@ -1,0 +1,69 @@
+.chatWidget {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  /* Use dynamic height based on viewport */
+  height: min(670px, 80vh);
+  background: linear-gradient(135deg, #f5f0ff 0%, #ffffff 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(107, 28, 150, 0.1);
+  margin: 1rem;
+
+  position: fixed;
+  right: 30px;
+  bottom: 80px;
+  max-width: 450px;
+}
+
+/* Standard breakpoints for different devices */
+/* Large desktop */
+@media (min-width: 1200px) {
+  .chatWidget {
+    height: min(700px, 80vh);
+  }
+}
+
+/* Desktop */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .chatWidget {
+    height: min(670px, 80vh);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 991px) {
+  .chatWidget {
+    max-width: 450px;
+    height: min(550px, 80vh);
+  }
+}
+
+/* Large Mobile */
+@media (min-width: 481px) and (max-width: 767px) {
+  .chatWidget {
+    max-width: 400px;
+    height: min(500px, 85vh);
+    margin: 0.5rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .chatWidget {
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+/* Handle landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .chatWidget {
+    height: 100vh;
+    max-width: 100%;
+  }
+}
+
