@@ -1,39 +1,47 @@
-import { useEffect, useState } from "react";
-import styles from "./chatscreen.module.css";
+import { useEffect, useRef, useState } from "react";
+import chatbot from "../../assets/logos/chatbot.png";
+import { Send, XCircle } from "react-feather";
 import socket from "../../helper/socket";
 import Constant from "../../constant/constant";
+import styles from "./chatscreen.module.css";
 
 const initialState = {
   authorization: {
-    verified: false,
-    token: '',
+    verified: true,
+    token: "",
   },
-  loader: true,
-  messageList: [],
+  loader: false,
+  messageList: [
+    {
+      message: {
+        paragraph: "Hello! I'm your AI assistant. How can I help you today?",
+      },
+      type: "AI",
+    },
+  ],
   form: {
     userMessage: "",
   },
 };
 
-const ChatScreen = () => {
+const ChatScreen = ({ showChat = false, setShowChat }) => {
   const [state, setState] = useState(initialState);
 
   const handleAiMessage = (event) => receiveAiMessageEventHandler(event.detail);
 
-  const authTokenInputHandler = (event) => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        authorization: {
-          ...prevState.authorization,
-          token: event.target.value,
-        },
-      };
-    });
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+    onAuthorize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onAuthorize = () => {
-    socket.init(state.authorization.token);
+    socket.init(localStorage.getItem("user-token"));
 
     connectEventHandler();
 
@@ -54,10 +62,10 @@ const ChatScreen = () => {
   };
 
   const connectEventHandler = () => {
-    setState({
-      ...state,
+    setState((st) => ({
+      ...st,
       loader: false,
-    });
+    }));
   };
 
   const sendMessageEventHandler = () => {
@@ -78,19 +86,55 @@ const ChatScreen = () => {
       form: {
         userMessage: "",
       },
+      loader: true,
     }));
+    scrollToBottom();
   };
 
   const receiveAiMessageEventHandler = (data) => {
-    console.log("receiveAiMessageEventHandler");
+    try {
+      if (data?.errorMessage || !data) {
+        setState((prevState) => ({
+          ...prevState,
+          messageList: [
+            ...prevState.messageList,
+            {
+              message: {
+                heading: "Error While generating response. Please try again",
+              },
+              type: "error",
+            },
+          ],
+          loader: false,
+        }));
+        return;
+      }
+      const newMessages = data?.message.map((msg) => ({
+        message: msg,
+        type: "AI",
+      }));
 
-    setState((prevState) => ({
-      ...prevState,
-      messageList: [
-        ...prevState.messageList,
-        { message: data.answer, type: "AI" },
-      ],
-    }));
+      setState((prevState) => ({
+        ...prevState,
+        messageList: [...prevState.messageList, ...newMessages],
+        loader: false,
+      }));
+      scrollToBottom();
+    } catch {
+      setState((prevState) => ({
+        ...prevState,
+        messageList: [
+          ...prevState.messageList,
+          {
+            message: {
+              heading: "Error While generating response. Please try again",
+            },
+            type: "error",
+          },
+        ],
+        loader: false,
+      }));
+    }
   };
 
   const handleEnterKey = (event) => {
@@ -111,77 +155,138 @@ const ChatScreen = () => {
 
       setState(initialState);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onChangeHandler = (event) => {
-    setState({
-      ...state,
+    setState((st) => ({
+      ...st,
       form: {
         ...state.form,
         [event.target.name]: event.target.value,
       },
-    });
+    }));
   };
 
-  if (!state.authorization.verified && state.loader) {
-    return (
-      <div className={styles.authorizationModelOverlay}>
-        <div className={styles.authorizationModelContainer}>
-          <input
-            type="text"
-            className={styles.authorizationModelInput}
-            name="token"
-            value={state.authorization.token}
-            placeholder="Enter your details"
-            onChange={authTokenInputHandler}
-          />
-          <button
-            className={styles.authorizationModelButton}
-            onClick={onAuthorize}
-          >
-            Authorriation Key
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const messagesList = state.messageList.map((message, index) => {
+  const messagesList = state?.messageList?.map((messageObj, index) => {
     return (
       <div
         key={index}
         className={
-          message.type === "AI" ? styles.aiMessage : styles.userMessage
+          messageObj.type === "AI" || messageObj.type === "error"
+            ? styles.aiMessage
+            : styles.userMessage
         }
       >
-        <div>{message.message}</div>
+        {(messageObj.type === "AI" || messageObj.type === "error") && (
+          <div
+            className={
+              messageObj.type !== "error"
+                ? styles.messageContainerAiMessage
+                : styles.messageContainerErrorMessage
+            }
+          >
+            <div style={{ fontWeight: "600" }}>
+              {messageObj?.message?.heading}
+            </div>
+            <div style={{ fontWeight: "500" }}>
+              {messageObj?.message?.subheading}
+            </div>
+            <div>{messageObj?.message?.paragraph}</div>
+            <br />
+            {messageObj?.message?.list && (
+              <div style={{ fontWeight: "600" }}>
+                {messageObj?.message?.list?.heading}
+              </div>
+            )}
+            <ul>
+              {messageObj?.message?.list?.children &&
+                messageObj?.message?.list?.children?.map((msg) => (
+                  <li>{msg}</li>
+                ))}
+            </ul>
+          </div>
+        )}
+        {messageObj.type !== "AI" && (
+          <div className={styles.messageContainerUserMessage}>
+            {messageObj.message}
+          </div>
+        )}
       </div>
     );
   });
 
   return (
-    <div className={styles.chatContainer}>
-      <div className={styles.chatScreen}>
-        <div className={styles.chatHeader}>Chat</div>
-        <div className={styles.chatMessagesContainer}>{messagesList}</div>
-        <div className={styles.chatInputContainer}>
-          <input
-            type="text"
-            placeholder="Type a message..."
-            name="userMessage"
-            value={state.form.userMessage}
-            onChange={(event) => onChangeHandler(event)}
-            onKeyDown={handleEnterKey}
-          />
-          <button
-            onClick={() => sendMessageEventHandler()}
-            onKeyUpCapture={() => sendMessageEventHandler}
-          >
-            Send
-          </button>
+    <>
+      {showChat && (
+        <div className={styles.chatSection}>
+          <div className={styles.chatContainer}>
+            <div className={styles.chatScreen}>
+              <div className={styles.chatHeader}>
+                <div className={styles.headerDetails}>
+                  <img
+                    src="https://storage.googleapis.com/media.landbot.io/51550/channels/C71EZXH3KZLX3HQTZO6NT9YY6EPK1YAQ.png"
+                    alt=""
+                    style={{ height: "30px", width: "30px" }}
+                  />
+                  <span className={styles.chatHeaderTitle}>
+                    Conversational AI
+                  </span>
+                </div>
+                <div className={styles.closeIcon}>
+                  <span
+                    onClick={() => {
+                      setShowChat(false);
+                    }}
+                  >
+                    <XCircle />{" "}
+                  </span>
+                </div>
+              </div>
+              <div className={styles.chatMessagesContainer}>
+                <>
+                  {messagesList}
+                  {state.loader && (
+                    <div className={styles.aiMessage}>
+                      <div className={styles.messageContainerAiMessageLoader}>
+                        Loading...
+                      </div>
+                    </div>
+                  )}
+                </>
+                <div ref={messagesEndRef} />
+              </div>
+              <div className={styles.chatInputContainer}>
+                <input
+                  type="text"
+                  placeholder="Type a message..."
+                  name="userMessage"
+                  value={state.form.userMessage}
+                  onChange={(event) => onChangeHandler(event)}
+                  onKeyDown={handleEnterKey}
+                />
+                <button
+                  onClick={() => sendMessageEventHandler()}
+                  onKeyUpCapture={() => sendMessageEventHandler}
+                >
+                  <Send />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+      <span className={styles.botLogoDiv}>
+        <img
+          src={chatbot}
+          className={styles.botLogo}
+          alt=""
+          onClick={() => {
+            setShowChat(true);
+          }}
+        />
+      </span>
+    </>
   );
 };
 

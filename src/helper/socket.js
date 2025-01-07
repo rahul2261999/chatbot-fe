@@ -16,7 +16,7 @@ class Socket {
   }
 
   constructor() {
-    this.#socket = io(process.env.REACT_APP_SOCKET_BE_URL, {
+    this.#socket = io("https://langflow-be-hdyu.onrender.com", {
       auth: { token: v4() },
       transports: ["websocket"],
       autoConnect: false,
@@ -45,11 +45,11 @@ class Socket {
 
       this.#socket.on("error", () => {
         console.log("socket error");
-      })
+      });
 
       this.#socket.on("connect_error", (error) => {
         console.error("Connection error:", error.message); // Logs the connection error
-      })
+      });
 
       this.receiveMessage();
 
