@@ -76,7 +76,7 @@
   height: 100%;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* border-radius: 10px; */
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -131,7 +131,6 @@
 .chatInputContainer {
   display: flex;
   padding: 10px;
-  border-top: 1px solid #e0e0e0;
   background-color: #ffffff;
 }
 
@@ -146,7 +145,7 @@
 }
 
 .chatInputContainer input:focus {
-  border-color: #007bff;
+  border: 2px solid #007bff;
 }
 
 .chatInputContainer button {
@@ -157,7 +156,7 @@
   font-size: 16px;
   font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -227,7 +226,7 @@
 } */
 
 .messageContainerAiMessage {
-  max-width: 70%;
+  max-width: 90%;
   padding: 12px 15px;
   border-radius: 12px;
   font-size: 14px;
@@ -240,8 +239,9 @@
     #009ffd
   ); /* Blue background for user */
   color: white;
-  border-top-right-radius: 0; /* Round left corner */
+  border-bottom-left-radius: 0; /* Round left corner */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  line-break: auto;
 }
 
 .messageContainerErrorMessage {
@@ -272,7 +272,7 @@
     #009ffd
   ); /* Blue background for user */
   color: white;
-  border-top-right-radius: 0; /* Round left corner */
+  border-bottom-left-radius: 0; /* Round left corner */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   animation: waveAnimation 1.5s infinite ease-in-out;
 }
@@ -298,7 +298,7 @@
   background: linear-gradient(135deg, #e0e0e0, #b0b0b0);
   color: #333; /* Darker text for better readability */
   color: #333333;
-  border-top-left-radius: 0; /* Round right corner */
+  border-bottom-right-radius: 0; /* Round right corner */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -347,11 +347,28 @@
   position: fixed;
   bottom: 10px;
   right: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+}
+
+.widgetText {
+  font-size: 16px;
+  background-color: #ffffff;
+  text-align: right;
+  padding: 2px 10px;
+  border-radius: 5px;
+  background-image: linear-gradient(to right, #57198f, #0e417f);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  font-weight: 500;
 }
 
 .botLogo {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   cursor: pointer;
 }
 
@@ -391,3 +408,37 @@
   font-size: 18px;
   color: #555;
 } */
+
+.intentButtonContainer {
+  position: relative;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.intentButtonContainer {
+  opacity: 1 !important;
+  cursor: pointer;
+}
+
+.intentButton {
+  background: linear-gradient(135deg, #e0e0e0, #b0b0b0);
+  width: 70%;
+  padding: 9px 5px;
+  border-radius: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 50px;
+  margin-top: 10px;
+  color: #333333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+  font-size: 14px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.intentButton:hover {
+  transform: scale(1.04);
+}

@@ -17,6 +17,20 @@ const initialState = {
         paragraph: "Hello! I'm your AI assistant. How can I help you today?",
       },
       type: "AI",
+      intentButton: [
+        {
+          text: "Insight of last monht",
+          aliasText: "How much engagement did reels receive last month?",
+        },
+        {
+          text: "User engagement on reels",
+          aliasText: "What’s the user engagement on image posts?",
+        },
+        {
+          text: "Image post performance",
+          aliasText: "What’s the user engagement on image posts?",
+        },
+      ],
     },
   ],
   form: {
@@ -66,6 +80,22 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
       ...st,
       loader: false,
     }));
+  };
+
+  const intentButtonHandler = (text) => {
+    if (!text || text.length === 0) {
+      return;
+    }
+
+    socket.sendMessage(text);
+    setState((prevState) => ({
+      ...prevState,
+      messageList: [...prevState.messageList, { type: "USER", message: text }],
+      form: { userMessage: "" },
+      loader: true,
+    }));
+
+    scrollToBottom();
   };
 
   const sendMessageEventHandler = () => {
@@ -179,33 +209,48 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
         }
       >
         {(messageObj.type === "AI" || messageObj.type === "error") && (
-          <div
-            className={
-              messageObj.type !== "error"
-                ? styles.messageContainerAiMessage
-                : styles.messageContainerErrorMessage
-            }
-          >
-            <div style={{ fontWeight: "600" }}>
-              {messageObj?.message?.heading}
-            </div>
-            <div style={{ fontWeight: "500" }}>
-              {messageObj?.message?.subheading}
-            </div>
-            <div>{messageObj?.message?.paragraph}</div>
-            <br />
-            {messageObj?.message?.list && (
+          <>
+            <div
+              className={
+                messageObj.type !== "error"
+                  ? styles.messageContainerAiMessage
+                  : styles.messageContainerErrorMessage
+              }
+            >
               <div style={{ fontWeight: "600" }}>
-                {messageObj?.message?.list?.heading}
+                {messageObj?.message?.heading}
+              </div>
+              <div style={{ fontWeight: "500" }}>
+                {messageObj?.message?.subheading}
+              </div>
+              <div>{messageObj?.message?.paragraph}</div>
+              <br />
+              {messageObj?.message?.list && (
+                <div style={{ fontWeight: "600" }}>
+                  {messageObj?.message?.list?.heading}
+                </div>
+              )}
+              <ul>
+                {messageObj?.message?.list?.children &&
+                  messageObj?.message?.list?.children?.map((msg) => (
+                    <li>{msg}</li>
+                  ))}
+              </ul>
+            </div>
+            {messageObj.intentButton && messageObj.intentButton.length && (
+              <div className={styles.intentButtonContainer}>
+                {messageObj.intentButton.map((btn, index) => (
+                  <button
+                    className={styles.intentButton}
+                    key={index}
+                    onClick={() => intentButtonHandler(btn.aliasText)}
+                  >
+                    {btn.text}
+                  </button>
+                ))}
               </div>
             )}
-            <ul>
-              {messageObj?.message?.list?.children &&
-                messageObj?.message?.list?.children?.map((msg) => (
-                  <li>{msg}</li>
-                ))}
-            </ul>
-          </div>
+          </>
         )}
         {messageObj.type !== "AI" && (
           <div className={styles.messageContainerUserMessage}>
@@ -276,7 +321,9 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
           </div>
         </div>
       )}
+
       <span className={styles.botLogoDiv}>
+        <div className={styles.widgetText}>How can i help you?</div>
         <img
           src={chatbot}
           className={styles.botLogo}
