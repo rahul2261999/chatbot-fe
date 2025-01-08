@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle } from "react-feather";
 import styles from "./landingPage.module.css";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const LandingPage = ({ setShowChat }) => {
   const [token, setToken] = useState(localStorage.getItem("user-token"));
@@ -88,6 +89,7 @@ const LandingPage = ({ setShowChat }) => {
         <section className={styles.foundingMembers}>
           <h2>Team Members</h2>
           <div className={styles.membersContainer}>
+
             <div className={styles.member}>
               <img
                 src="https://ca.slack-edge.com/TC3TKQU8P-U031ZCQ94CU-96228cf09192-512"
@@ -95,7 +97,16 @@ const LandingPage = ({ setShowChat }) => {
                 className={styles.memberImage}
               />
               <p>Anirban Pal</p>
+              <div className={styles.socialProfile}>
+                <a href="https://github.com/approjecthub" target="_blank" rel="noreferrer">
+                  <FaGithub />
+                </a>
+                <a href="https://www.linkedin.com/in/anirban-pal-6a1243130/" target="_blank" rel="noreferrer">
+                  <FaLinkedin fill="blue" />
+                </a>
+              </div>
             </div>
+
             <div className={styles.member}>
               <img
                 src="https://ca.slack-edge.com/TC3TKQU8P-U041DKG7T4Z-59d0d70f0171-512"
@@ -103,7 +114,16 @@ const LandingPage = ({ setShowChat }) => {
                 className={styles.memberImage}
               />
               <p>Akshay K S</p>
+              <div className={styles.socialProfile}>
+                <a href="https://github.com/akshayks3" target="_blank" rel="noreferrer">
+                  <FaGithub />
+                </a>
+                <a href="https://www.linkedin.com/in/akshayks3/" target="_blank" rel="noreferrer">
+                  <FaLinkedin fill="blue" />
+                </a>
+              </div>
             </div>
+
             <div className={styles.member}>
               <img
                 src="https://ca.slack-edge.com/TC3TKQU8P-U05E5GC1JGJ-bd6f91d3e2f6-512"
@@ -111,7 +131,16 @@ const LandingPage = ({ setShowChat }) => {
                 className={styles.memberImage}
               />
               <p>Rahul Saini</p>
+              <div className={styles.socialProfile}>
+                <a href="https://github.com/rahul2261999" target="_blank" rel="noreferrer">
+                  <FaGithub />
+                </a>
+                <a href="https://www.linkedin.com/in/rahul-saini22/" target="_blank" rel="noreferrer">
+                  <FaLinkedin fill="blue" />
+                </a>
+              </div>
             </div>
+
             <div className={styles.member}>
               <img
                 src="https://ca.slack-edge.com/TC3TKQU8P-U03KXNJR36V-8bb379f48174-512"
@@ -119,6 +148,43 @@ const LandingPage = ({ setShowChat }) => {
                 className={styles.memberImage}
               />
               <p>Naman Sinha</p>
+              <div className={styles.socialProfile}>
+                <a href="https://github.com/Greyroot328" target="_blank" rel="noreferrer">
+                  <FaGithub />
+                </a>
+                <a href="https://www.linkedin.com/in/namansinha-in/" target="_blank" rel="noreferrer">
+                  <FaLinkedin fill="blue" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section className={styles.projectResource}>
+          <h2>Project Resource</h2>
+          <div>
+            <div className={styles.demoVideo}>
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/80SuSCE3SKU?si=3Hpu9CtMvIfKmfp7"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+
+            <div className={styles.projectLinks}>
+              <h4>Source Code</h4>
+              <a className={styles.fe} href="https://github.com/rahul2261999/chatbot-fe/tree/langflow-ui" target="_blank" rel="noreferrer">
+                <span> Explore the Frontend Repository</span> <FaGithub />
+              </a>
+              <a className={styles.be} href="https://github.com/rahul2261999/chatbot-be/tree/lanflow-api-integration" target="_blank" rel="noreferrer">
+                <span> Explore the Backend Repository</span> <FaGithub />
+              </a>
             </div>
           </div>
         </section>

@@ -63,7 +63,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  height: min(700px, 80vh);
   background-color: #f4f4f9;
   font-family: "Arial", sans-serif;
 }
@@ -73,7 +73,7 @@
   display: flex;
   flex-direction: column;
   width: 400px;
-  height: 500px;
+  height: 100%;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* border-radius: 10px; */
@@ -88,10 +88,13 @@
   font-size: 18px;
   font-weight: bold;
   display: flex;
+  align-items: center;
 }
 
 .headerDetails {
   flex: 0 0 90%;
+  display: flex;
+  align-items: center;
 }
 
 .closeIcon {
@@ -101,7 +104,6 @@
 
 .chatHeaderTitle {
   position: relative;
-  bottom: 10px;
   margin-left: 10px;
   font-size: 16px;
 }
