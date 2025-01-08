@@ -1,15 +1,26 @@
-import { useState } from "react";
-import ChatScreen from "./components/chatscreen/chatscreen";
-import LandingPage from "./components/LandingPage/landingPage";
+import React, { useState } from 'react';
+import Navbar from './components/LandingPage/Navbar';
+import HeroSection from './components/LandingPage/HeroSection';
+import AboutUs from './components/LandingPage/AboutUs';
+import Features from './components/LandingPage/Features';
+import ProjectLinks from './components/LandingPage/ProjectLinks';
+import Team from './components/LandingPage/Team';
+import LandingPage from './components/LandingPage/landingPage';
 import "./App.css";
+import ChatScreen from './components/chatscreen/chatscreen';
 
 function App() {
   const [showChat, setShowChat] = useState(false);
   return (
-    <>
+    <div className="font-sans">
+      <Navbar />
+      <HeroSection />
+      <AboutUs />
+      <Features />
+      <Team />
+      <ProjectLinks />
       <ChatScreen showChat={showChat} setShowChat={setShowChat} />
-      <LandingPage setShowChat={setShowChat} />
-    </>
+    </div>
   );
 }
 
