@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import HeroBgImage from '../../assets/image/hero_bg.webp'
 
 const HeroSection = () => {
   return (
@@ -11,15 +12,15 @@ const HeroSection = () => {
     >
       <motion.div
         className="absolute inset-0 z-0"
-        initial={{ scale: 1 }}
-        animate={{ scale: 1.05 }}
-        transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+        // initial={{ scale: 1 }}
+        // animate={{ scale: 1.05 }}
+        // transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
       >
-        <img
-          src="/placeholder.svg?height=1080&width=1920"
+        {/* <img
+          src={HeroBgImage}
           alt="Technology Background"
           className="w-full h-full object-cover"
-        />
+        /> */}
       </motion.div>
       <div className="relative z-10 text-center text-white">
         <motion.h1
@@ -33,7 +34,7 @@ const HeroSection = () => {
           </span>
         </motion.h1>
         <motion.p
-          className="text-xl md:text-2xl"
+          className="text-xl md:text-2xl from-purple"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}

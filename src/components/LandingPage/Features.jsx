@@ -11,7 +11,7 @@ const features = [
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <motion.div
-    className="bg-white p-6 rounded-lg shadow-lg"
+    className="bg-white p-6 rounded-lg shadow-lg hero-image"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >

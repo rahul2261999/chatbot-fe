@@ -5,8 +5,8 @@ const AboutUs = () => {
   return (
     <section id="about" className="py-20 bg-gray-100">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center">
-          <motion.div
+        <div className="flex flex-col md:flex-row items-center justify-center">
+          {/* <motion.div
             className="md:w-1/2 mb-10 md:mb-0"
             initial={{ x: -100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
@@ -14,7 +14,7 @@ const AboutUs = () => {
             viewport={{ once: true }}
           >
             <img src="/placeholder.svg?height=400&width=400" alt="AI Illustration" className="w-full max-w-md mx-auto" />
-          </motion.div>
+          </motion.div> */}
           <motion.div
             className="md:w-1/2 md:pl-10"
             initial={{ x: 100, opacity: 0 }}
