@@ -1,12 +1,28 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { FaRobot, FaChartLine, FaClipboardList, FaPlug } from 'react-icons/fa';
+import React from "react";
+import { motion } from "motion/react";
+import { FaRobot, FaChartLine, FaClipboardList, FaPlug } from "react-icons/fa";
 
 const features = [
-  { icon: FaRobot, title: 'AI-Powered Insights', description: 'Leverage advanced AI for deep social media analysis.' },
-  { icon: FaChartLine, title: 'Real-Time Data Analysis', description: 'Get up-to-the-minute insights on your social media performance.' },
-  { icon: FaClipboardList, title: 'Customizable Reports', description: 'Tailor your reports to focus on the metrics that matter to you.' },
-  { icon: FaPlug, title: 'Seamless Integration', description: 'Easily integrate with your existing social media tools and workflows.' },
+  {
+    icon: FaRobot,
+    title: "AI-Powered Chatbot",
+    description: "",
+  },
+  {
+    icon: FaChartLine,
+    title: "Performance Evaluation",
+    description: "",
+  },
+  {
+    icon: FaClipboardList,
+    title: "Engagement Insights",
+    description: "",
+  },
+  {
+    icon: FaPlug,
+    title: "Geographical Mapping",
+    description: "",
+  },
 ];
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
@@ -25,7 +41,9 @@ const Features = () => {
   return (
     <section id="features" className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">Our Features</h2>
+        <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">
+          Our Features
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <motion.div
@@ -45,4 +63,3 @@ const Features = () => {
 };
 
 export default Features;
-

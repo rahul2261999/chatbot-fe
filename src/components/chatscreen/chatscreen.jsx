@@ -264,10 +264,17 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
                   value={state.form.userMessage}
                   onChange={(event) => onChangeHandler(event)}
                   onKeyDown={handleEnterKey}
+                  style={{
+                    border:
+                      "1px solid linear-gradient(135deg, #171818, hwb(207 28% 68%))",
+                  }}
                 />
                 <button
                   onClick={() => sendMessageEventHandler()}
                   onKeyUpCapture={() => sendMessageEventHandler}
+                  style={{
+                    background: "linear-gradient(135deg, #2a2a72, #009ffd)",
+                  }}
                 >
                   <Send />
                 </button>

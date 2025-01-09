@@ -10,7 +10,7 @@ body {
   background-color: #f4f4f4;
   color: #333;
   /* height: 100vh; */
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
 }
