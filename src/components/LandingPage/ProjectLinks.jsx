@@ -24,6 +24,7 @@ const ProjectLinks = () => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full rounded-lg shadow-lg"
+                title="Video"
               ></iframe>
             </div>
           </motion.div>

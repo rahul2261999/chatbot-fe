@@ -51,6 +51,7 @@ const TeamMember = ({ name, role, image, git, linkedIn }) => (
         href={git}
         className="text-gray-600 hover:text-blue-600 transition duration-300"
         target="_blank"
+        rel="noreferrer"
       >
         <FaGithub className="text-2xl" />
       </a>
@@ -58,6 +59,7 @@ const TeamMember = ({ name, role, image, git, linkedIn }) => (
         href={linkedIn}
         className="text-gray-600 hover:text-blue-600 transition duration-300"
         target="_blank"
+        rel="noreferrer"
       >
         <FaLinkedin className="text-2xl" />
       </a>
