@@ -7,24 +7,17 @@ import ProjectLinks from "./components/LandingPage/ProjectLinks";
 import Team from "./components/LandingPage/Team";
 import "./App.css";
 import ChatScreen from "./components/chatscreen/chatscreen";
+import { v4 } from "uuid";
 
 function App() {
   const [showChat, setShowChat] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("user-token"));
-
-  const generateHex = (length) => {
-    let hex = "";
-    for (let i = 0; i < length; i++) {
-      hex += Math.floor(Math.random() * 16).toString(16);
-    }
-    return hex;
-  };
 
   useEffect(() => {
-    if (!token) {
-      const uniqToken = generateHex(8);
-      localStorage.setItem("user-token", uniqToken);
-      setToken(uniqToken);
+    let userToken = localStorage.getItem("user-token");
+
+    if (!userToken || (userToken && userToken.length === 0)) {
+      const userToken = v4();
+      localStorage.setItem("user-token", userToken);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
