@@ -58,6 +58,22 @@
   z-index: 1000;
 }
 
+@media (max-width: 670px) {
+  .chatSection {
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+  }
+
+  .chatContainer {
+    height:  calc(var(--vh, 1vh) * 100) !important;
+  }
+
+  .chatScreen {
+    border-radius: 0 !important;
+  }
+}
 /* Chat container styling */
 .chatContainer {
   display: flex;
@@ -160,18 +176,18 @@
 
 .chatInputContainer button:hover svg {
   animation-name: translateButtonSvg;
-  animation-duration: .7s;
+  animation-duration: 0.7s;
   animation-iteration-count: 1;
   animation-direction: normal;
 }
 
 @keyframes translateButtonSvg {
   from {
-    transform: translate3d(-10px,10px,0);
+    transform: translate3d(-10px, 10px, 0);
   }
 
   to {
-    transform:  translate3d(30px, -30px, 0);
+    transform: translate3d(30px, -30px, 0);
   }
 }
 
@@ -251,7 +267,7 @@
 }
 
 .messageContainerAiMessage li::before {
-  content: '-';
+  content: "-";
   margin-left: 2px;
   margin-right: 8px;
 }

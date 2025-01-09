@@ -46,13 +46,20 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   useEffect(() => {
     onAuthorize();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [state.messageList]);
 
   const onAuthorize = () => {
     socket.init(localStorage.getItem("user-token"));
@@ -94,8 +101,6 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
       form: { userMessage: "" },
       loader: true,
     }));
-
-    scrollToBottom();
   };
 
   const sendMessageEventHandler = () => {
@@ -118,7 +123,6 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
       },
       loader: true,
     }));
-    scrollToBottom();
   };
 
   const receiveAiMessageEventHandler = (data) => {
@@ -149,7 +153,6 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
         messageList: [...prevState.messageList, ...newMessages],
         loader: false,
       }));
-      scrollToBottom();
     } catch {
       setState((prevState) => ({
         ...prevState,
@@ -200,64 +203,70 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
 
   const messagesList = state?.messageList?.map((messageObj, index) => {
     return (
-      <div
-        key={index}
-        className={
-          messageObj.type === "AI" || messageObj.type === "error"
-            ? styles.aiMessage
-            : styles.userMessage
-        }
-      >
-        {(messageObj.type === "AI" || messageObj.type === "error") && (
-          <>
-            <div
-              className={
-                messageObj.type !== "error"
-                  ? styles.messageContainerAiMessage
-                  : styles.messageContainerErrorMessage
-              }
-            >
-              <div style={{ fontWeight: "600" }}>
-                {messageObj?.message?.heading}
-              </div>
-              <div style={{ fontWeight: "500" }}>
-                {messageObj?.message?.subheading}
-              </div>
-              <div>{messageObj?.message?.paragraph}</div>
-              <br />
-              {messageObj?.message?.list && (
+      <>
+        <div
+          key={index}
+          className={
+            messageObj.type === "AI" || messageObj.type === "error"
+              ? styles.aiMessage
+              : styles.userMessage
+          }
+        >
+          {(messageObj.type === "AI" || messageObj.type === "error") && (
+            <>
+              <div
+                className={
+                  messageObj.type !== "error"
+                    ? styles.messageContainerAiMessage
+                    : styles.messageContainerErrorMessage
+                }
+              >
                 <div style={{ fontWeight: "600" }}>
-                  {messageObj?.message?.list?.heading}
+                  {messageObj?.message?.heading}
+                </div>
+                <div style={{ fontWeight: "500" }}>
+                  {messageObj?.message?.subheading}
+                </div>
+                <div>{messageObj?.message?.paragraph}</div>
+                <br />
+                {messageObj?.message?.list && (
+                  <div style={{ fontWeight: "600" }}>
+                    {messageObj?.message?.list?.heading}
+                  </div>
+                )}
+                <ul>
+                  {messageObj?.message?.list?.children &&
+                    messageObj?.message?.list?.children?.map((msg) => (
+                      <li>{msg}</li>
+                    ))}
+                </ul>
+              </div>
+              {messageObj.intentButton && messageObj.intentButton.length && (
+                <div className={styles.intentButtonContainer}>
+                  {messageObj.intentButton.map((btn, index) => (
+                    <button
+                      className={styles.intentButton}
+                      key={index}
+                      onClick={() => intentButtonHandler(btn.aliasText)}
+                    >
+                      {btn.text}
+                    </button>
+                  ))}
                 </div>
               )}
-              <ul>
-                {messageObj?.message?.list?.children &&
-                  messageObj?.message?.list?.children?.map((msg) => (
-                    <li>{msg}</li>
-                  ))}
-              </ul>
+            </>
+          )}
+          {messageObj.type !== "AI" && (
+            <div className={styles.messageContainerUserMessage}>
+              {messageObj.message}
             </div>
-            {messageObj.intentButton && messageObj.intentButton.length && (
-              <div className={styles.intentButtonContainer}>
-                {messageObj.intentButton.map((btn, index) => (
-                  <button
-                    className={styles.intentButton}
-                    key={index}
-                    onClick={() => intentButtonHandler(btn.aliasText)}
-                  >
-                    {btn.text}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-        {messageObj.type !== "AI" && (
-          <div className={styles.messageContainerUserMessage}>
-            {messageObj.message}
-          </div>
-        )}
-      </div>
+          )}
+
+          {state.messageList.length - 1 === index && (
+            <div ref={messagesEndRef} />
+          )}
+        </div>
+      </>
     );
   });
 
@@ -294,12 +303,14 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
                   {state.loader && (
                     <div className={styles.aiMessage}>
                       <div className={styles.messageContainerAiMessageLoader}>
-                        Loading...
+                        Typing...
                       </div>
                     </div>
                   )}
+
+                  <div ref={messagesEndRef} />
+                  {scrollToBottom()}
                 </>
-                <div ref={messagesEndRef} />
               </div>
               <div className={styles.chatInputContainer}>
                 <input
