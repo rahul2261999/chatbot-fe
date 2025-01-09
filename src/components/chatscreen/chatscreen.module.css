@@ -266,11 +266,7 @@
   line-height: 1.5;
   word-wrap: break-word;
   position: relative;
-  background: linear-gradient(
-    135deg,
-    #2a2a72,
-    #009ffd
-  ); /* Blue background for user */
+  background: linear-gradient(135deg, #2a2a72, #009ffd);
   color: white;
   border-bottom-left-radius: 0; /* Round left corner */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

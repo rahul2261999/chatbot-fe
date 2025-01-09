@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React from "react";
+import { motion } from "motion/react";
 
 const AboutUs = () => {
   return (
@@ -22,9 +22,21 @@ const AboutUs = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-4 text-blue-600">About InsightSphere</h2>
+            <h2 className="text-3xl font-bold mb-4 text-blue-600">
+              About INFOBOTICS
+            </h2>
             <p className="text-gray-700 mb-6">
-              InsightSphere is an AI-powered chatbot leveraging Retrieval-Augmented Generation (RAG) to provide real-time social media performance analysis. Designed for businesses and creators, it simplifies decision-making with actionable insights.
+              Welcome to INFOBOTICS, the AI-powered chatbot revolutionizing
+              social media performance analysis. INFOBOTICS is more than just a
+              platform—it’s your intelligent assistant for understanding and
+              optimizing your social media presence. Designed for businesses,
+              influencers, and marketers, INFOBOTICS brings the power of AI to
+              your fingertips. With a user-friendly interface and real-time
+              communication, our chatbot empowers you to make data-driven
+              decisions and stay ahead in the competitive social media
+              landscape. Experience the future of social media analysis with
+              INFOBOTICS—your AI chatbot for smarter insights and better
+              results!
             </p>
             <motion.button
               className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300"
@@ -41,4 +53,3 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
-
