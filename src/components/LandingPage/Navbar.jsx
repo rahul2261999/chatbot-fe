@@ -18,7 +18,7 @@ const Navbar = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900">
+            <span className="bg-clip-text text-blue-600 header-logo">
               INFOBOTICS
             </span>
           </motion.div>

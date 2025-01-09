@@ -19,7 +19,7 @@ const initialState = {
       type: "AI",
       intentButton: [
         {
-          text: "Insight of last monht",
+          text: "Insight of last month",
           aliasText: "How much engagement did reels receive last month?",
         },
         {
@@ -317,9 +317,6 @@ const ChatScreen = ({ showChat = false, setShowChat }) => {
                 <button
                   onClick={() => sendMessageEventHandler()}
                   onKeyUpCapture={() => sendMessageEventHandler}
-                  style={{
-                    background: "linear-gradient(135deg, #2a2a72, #009ffd)",
-                  }}
                 >
                   <Send />
                 </button>

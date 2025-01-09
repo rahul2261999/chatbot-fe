@@ -64,7 +64,6 @@
   justify-content: center;
   align-items: center;
   height: min(700px, 80vh);
-  background-color: #f4f4f9;
   font-family: "Arial", sans-serif;
 }
 
@@ -74,15 +73,14 @@
   flex-direction: column;
   width: 400px;
   height: 100%;
-  background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
   overflow: hidden;
+  border-radius: 10px;
 }
 
 /* Chat header styling */
 .chatHeader {
-  background: linear-gradient(135deg, #2a2a72, #009ffd);
+  background: #581c87;
   color: #ffffff;
   padding: 15px;
   font-size: 18px;
@@ -145,24 +143,36 @@
 }
 
 .chatInputContainer input:focus {
-  border: 2px solid #007bff;
+  border: 2px solid #581c87;
 }
 
 .chatInputContainer button {
   margin-left: 10px;
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #581c87;
   color: #ffffff;
   font-size: 16px;
   font-weight: bold;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.chatInputContainer button:hover {
-  background-color: #0056b3;
+.chatInputContainer button:hover svg {
+  animation-name: translateButtonSvg;
+  animation-duration: .7s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+}
+
+@keyframes translateButtonSvg {
+  from {
+    transform: translate3d(-10px,10px,0);
+  }
+
+  to {
+    transform:  translate3d(30px, -30px, 0);
+  }
 }
 
 /* Messages styling (example messages for dynamic implementation) */
@@ -226,22 +236,24 @@
 } */
 
 .messageContainerAiMessage {
+  position: relative;
   max-width: 90%;
   padding: 12px 15px;
-  border-radius: 12px;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
-  position: relative;
-  background: linear-gradient(
-    135deg,
-    #2a2a72,
-    #009ffd
-  ); /* Blue background for user */
-  color: white;
-  border-bottom-left-radius: 0; /* Round left corner */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   line-break: auto;
+  background-color: #eee5f9;
+  color: #4a148c;
+  box-shadow: 0px 2px 4px rgba(88, 28, 135, 0.2);
+  border-radius: 12px;
+  border-bottom-left-radius: 0; /* Round left corner */
+}
+
+.messageContainerAiMessage li::before {
+  content: '-';
+  margin-left: 2px;
+  margin-right: 8px;
 }
 
 .messageContainerErrorMessage {
@@ -261,15 +273,15 @@
 .messageContainerAiMessageLoader {
   max-width: 30%;
   padding: 12px 15px;
-  border-radius: 12px;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
   position: relative;
-  background: linear-gradient(135deg, #2a2a72, #009ffd);
-  color: white;
+  background-color: #eee5f9;
+  color: #4a148c;
+  box-shadow: 0px 2px 4px rgba(88, 28, 135, 0.2);
+  border-radius: 12px;
   border-bottom-left-radius: 0; /* Round left corner */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   animation: waveAnimation 1.5s infinite ease-in-out;
 }
 
@@ -284,18 +296,19 @@
 }
 
 .messageContainerUserMessage {
+  position: relative;
   max-width: 70%;
   padding: 12px 15px;
-  border-radius: 12px;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
-  position: relative;
-  background: linear-gradient(135deg, #e0e0e0, #b0b0b0);
-  color: #333; /* Darker text for better readability */
-  color: #333333;
+
+  background: #581c87;
+  color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4), 0px 1px 3px rgba(0, 0, 0, 0.2);
+
+  border-radius: 12px;
   border-bottom-right-radius: 0; /* Round right corner */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* Optional message tail (triangle) */
@@ -360,6 +373,7 @@
   -webkit-text-fill-color: transparent;
   position: relative;
   font-weight: 500;
+  margin-right: 10px;
 }
 
 .botLogo {
@@ -419,7 +433,6 @@
 }
 
 .intentButton {
-  background: linear-gradient(135deg, #e0e0e0, #b0b0b0);
   width: 70%;
   padding: 9px 5px;
   border-radius: 5px;
@@ -428,8 +441,9 @@
   overflow: hidden;
   height: 50px;
   margin-top: 10px;
-  color: #333333;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  background: #581c87;
+  color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4), 0px 1px 3px rgba(0, 0, 0, 0.2);
   font-weight: 500;
   font-size: 14px;
   transition: transform 0.3s ease-in-out;
@@ -437,4 +451,17 @@
 
 .intentButton:hover {
   transform: scale(1.04);
+}
+
+.widgetText::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  border-radius: 12px;
+  border-top-right-radius: 0;
 }

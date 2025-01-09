@@ -5,28 +5,28 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 const teamMembers = [
   {
     name: "Anirban Pal",
-    role: "",
+    role: "Backend Developer",
     image: "https://ca.slack-edge.com/TC3TKQU8P-U031ZCQ94CU-96228cf09192-512",
     git: "https://github.com/approjecthub",
     linkedIn: "https://www.linkedin.com/in/anirban-pal-6a1243130/",
   },
   {
     name: "Akshay K S",
-    role: "",
+    role: "Frontend Developer",
     image: "https://ca.slack-edge.com/TC3TKQU8P-U041DKG7T4Z-59d0d70f0171-512",
     git: "https://github.com/akshayks3",
     linkedIn: "https://www.linkedin.com/in/akshayks3/",
   },
   {
     name: "Rahul Saini",
-    role: "",
+    role: "Full Stack Developer",
     image: "https://ca.slack-edge.com/TC3TKQU8P-U05E5GC1JGJ-bd6f91d3e2f6-512",
     git: "https://github.com/rahul2261999",
     linkedIn: "https://www.linkedin.com/in/rahul-saini22/",
   },
   {
     name: "Naman Sinha",
-    role: "",
+    role: "Backend Developer",
     image: "https://ca.slack-edge.com/TC3TKQU8P-U03KXNJR36V-8bb379f48174-512",
     git: "https://github.com/Greyroot328",
     linkedIn: "https://www.linkedin.com/in/namansinha-in/",
@@ -36,8 +36,7 @@ const teamMembers = [
 const TeamMember = ({ name, role, image, git, linkedIn }) => (
   <motion.div
     className="bg-white p-6 rounded-lg shadow-lg text-center"
-    whileHover={{ scale: 1.05, rotate: 2 }}
-    whileTap={{ scale: 0.95 }}
+    whileHover={{ scale: 1.05 }}
   >
     <img
       src={image}
