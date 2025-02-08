@@ -1,11 +1,17 @@
 import React, { useEffect, useRef } from "react";
-import { Message } from "./ChatWidget";
-import AIMessage from "./AIMessage";
 import styles from "../../styles/ConversationList.module.css";
+import {
+  AiAgentMessage,
+  ChatMessage,
+  ChatMessageType,
+  SystemMessage,
+  UserMessage,
+} from "@/types/chat.type";
+import AiAgentMessageComp from "./AiAgentMessage";
 
 interface ConversationListProps {
-  messages: Message[];
-  onIntentButtonClick: (intent: string, aliasText: string) => void;
+  messages: ChatMessage[];
+  onIntentButtonClick: (aliasText: string) => void;
 }
 
 const ConversationList: React.FC<ConversationListProps> = ({
@@ -18,48 +24,80 @@ const ConversationList: React.FC<ConversationListProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const messageJsxElementList = messages.map((message: ChatMessage) => {
+    if (message.type === ChatMessageType.SYSTEM_MESSAGE) {
+      const systemMessage = message.message as SystemMessage;
+      const messageComponent = (
+        <div className={`${styles.message} ${styles.aiMessage}`}>
+          {systemMessage.text}
+        </div>
+      );
+
+      const quickReplies = systemMessage.quickReplies?.map(
+        (quickReply, index) => {
+          return (
+            <button
+              key={`msg-${message.id}-quick-reply-${index}`}
+              onClick={() => onIntentButtonClick(quickReply.intent)}
+              className={styles.intentButton}
+            >
+              {quickReply.label}
+            </button>
+          );
+        }
+      );
+
+      return (
+        <div key={message.id} className={styles.messageContainer}>
+          {messageComponent}
+          {quickReplies && quickReplies.length > 0 ? quickReplies : <></>}
+        </div>
+      );
+    } else if (message.type === ChatMessageType.AI_Agent_MESSAGE) {
+      const aiAgentMessage = message.message as AiAgentMessage;
+      const messageComponent = (
+        <div className={`${styles.message} ${styles.aiMessage}`}>
+          <AiAgentMessageComp
+            id={message.id}
+            key={message.id}
+            message={message.message as AiAgentMessage}
+          />
+        </div>
+      );
+
+      const quickReplies = aiAgentMessage.quickReplies?.map(
+        (quickReply, index) => {
+          return (
+            <button
+              key={`msg-${message.id}-quick-reply-${index}`}
+              onClick={() => onIntentButtonClick(quickReply.intent)}
+              className={styles.intentButton}
+            >
+              {quickReply.label}
+            </button>
+          );
+        }
+      );
+
+      return (
+        <div key={message.id} className={styles.messageContainer}>
+          {messageComponent}
+          {quickReplies && quickReplies.length > 0 ? quickReplies : <></>}
+        </div>
+      );
+    } else {
+      const userMessage = message.message as UserMessage;
+      <div key={message.id} className={styles.messageContainer}>
+        <div className={`${styles.message} ${styles.userMessage}`}>
+          {userMessage.text}
+        </div>
+      </div>;
+    }
+  });
+
   return (
     <div className={styles.conversationList}>
-      {messages.map((message) => (
-        <div key={message.id} className={styles.messageContainer}>
-          <div
-            className={`${styles.message} ${
-              message.isAI ? styles.aiMessage : styles.userMessage
-            }`}
-          >
-            {message.isAI ? (
-              <AIMessage
-                id={message.id}
-                data={{
-                  message: message.aiMessage?.message || [],
-                  sessionInfo: message.aiMessage?.sessionInfo || null,
-                  intentButtons: message.aiMessage?.intentButtons || [],
-                }}
-              />
-            ) : (
-              message.userMessage?.text
-            )}
-          </div>
-          {message.isAI &&
-            message.aiMessage &&
-            message.aiMessage.intentButtons &&
-            message.aiMessage.intentButtons.length > 0 && (
-              <div className={styles.intentButtons}>
-                {message.aiMessage.intentButtons.map((button, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      onIntentButtonClick(button.label, button.aliasText)
-                    }
-                    className={styles.intentButton}
-                  >
-                    {button.label}
-                  </button>
-                ))}
-              </div>
-            )}
-        </div>
-      ))}
+      {messageJsxElementList}
       <div ref={messagesEndRef} />
     </div>
   );

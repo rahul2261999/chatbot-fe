@@ -1,13 +1,6 @@
 import { io, Socket } from "socket.io-client";
-import Constant from "../constants/constant";
-import { v4 } from "uuid";
-import { Message } from "@/components/chatscreen/ChatWidget";
-import exp from "constants";
-
-export interface SocketInitOptions {
-  token: string;
-  userId: string;
-}
+import Constant from "../../constants/constant";
+import { AiAgentResponse, ISendMesssgaPayload, SocketInitOptions } from "@/types/socket.type";
 
 class SocketClient {
   private static instance: SocketClient;
@@ -24,29 +17,20 @@ class SocketClient {
 
   private constructor() {
     this.socket = io(process.env.REACT_APP_SOCKET_BE_URL, {
-      auth: { token: "i am groot" },
       transports: ["websocket"],
       autoConnect: false,
     });
   }
 
   init(options: SocketInitOptions) {
-    console.log("init", options);
-    
-    this.socket.auth = {
-      token: options.token,
-      userId: options.userId,
-    };
+    this.socket.auth = options;
 
     if (!this.connectionEstablished) {
-      console.log("init socket");
+      console.log("initilizing socket connection......");
       this.socket.connect();
 
       this.socket.on("connect", () => {
         console.log("socket connected successfully");
-
-        // const connectEvent = new CustomEvent("connect");
-        // document.dispatchEvent(connectEvent);
       });
 
       this.socket.on("disconnect", () => {
@@ -58,7 +42,6 @@ class SocketClient {
       })
 
       this.socket.on("connect_error", (error) => {
-        console.error("Connection error:", error.message); // Logs the connection error
       })
 
       this.receiveMessage();
@@ -68,7 +51,6 @@ class SocketClient {
   }
 
   joinRoom() {
-    console.log(this.socket.connected);
     if (this.socket.connected) {
       this.socket.emit(Constant.Socket_Emit_Event.JOIN_ROOM);
     }
@@ -78,18 +60,18 @@ class SocketClient {
     this.socket.emit(Constant.Socket_Emit_Event.LEAVE_ROOM);
   }
 
-  sendMessage(data: { message: string }) {
-    this.socket.emit(Constant.Socket_Emit_Event.USER_MESSAGE_SENT, {
+  sendMessage(data: ISendMesssgaPayload) {
+    this.socket.emit(Constant.Socket_Emit_Event.USER_MESSAGE, {
       data,
     });
   }
 
   receiveMessage() {
-    this.socket.on(Constant.Socket_Reciever_Event.AI_MESSAGE_SENT, (data) => {
-      console.log("socet event receiveMessage");
+    this.socket.on(Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE, (data: AiAgentResponse) => {
+      console.log("Socket Event: AGENT_MESSAGE");
 
       const aiMessageEvent = new CustomEvent(
-        Constant.Socket_Reciever_Event.AI_MESSAGE_SENT,
+        Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE,
         { detail: data }
       );
       document.dispatchEvent(aiMessageEvent);

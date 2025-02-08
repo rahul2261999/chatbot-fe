@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Send } from 'lucide-react'
 import styles from '../../styles/ChatInput.module.css'
 
 interface ChatInputProps {
@@ -30,7 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ disabled, onSendMessage }) => {
         disabled={disabled}
       />
       <button disabled={disabled} type="submit" className={styles.sendButton} aria-label="Send message">
-        <Send size={20} />
+       Send
       </button>
     </form>
   )

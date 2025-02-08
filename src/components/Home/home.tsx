@@ -1,5 +1,5 @@
 import React from "react";
-import ChatWidget from "../chatscreen/ChatWidget";
+import Chat from "../chatscreen";
 
 const Home: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const Home: React.FC = () => {
         background: "#f0f0f0",
       }}
     >
-      <ChatWidget />
+      <Chat />
     </div>
   );
 };
