@@ -32,7 +32,7 @@ const Chat: React.FC = () => {
 
     const message: ChatMessage = {
       id: Date.now(),
-      type: ChatMessageType.AI_Agent_MESSAGE,
+      type: ChatMessageType.AI_AGENT_MESSAGE,
       message: aiAgentMessage,
     };
 
@@ -104,16 +104,26 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className={styles.chatWidget}>
-      <Header title="AI Chat Assistant" />
-      <ConversationList
-        messages={chatMessages}
-        onIntentButtonClick={handleIntentButtonClick}
-      />
-      <ChatInput
-        disabled={loader}
-        onSendMessage={(text: string) => addMessage({ type: "text", text })}
-      />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        background: "#f0f0f0",
+      }}
+    >
+      <div className={styles.chatWidget}>
+        <Header title="AI Chat Assistant" />
+        <ConversationList
+          messages={chatMessages}
+          onIntentButtonClick={handleIntentButtonClick}
+        />
+        <ChatInput
+          disabled={loader}
+          onSendMessage={(text: string) => addMessage({ type: "text", text })}
+        />
+      </div>
     </div>
   );
 };

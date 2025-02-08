@@ -53,7 +53,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
           {quickReplies && quickReplies.length > 0 ? quickReplies : <></>}
         </div>
       );
-    } else if (message.type === ChatMessageType.AI_Agent_MESSAGE) {
+    } else if (message.type === ChatMessageType.AI_AGENT_MESSAGE) {
       const aiAgentMessage = message.message as AiAgentMessage;
       const messageComponent = (
         <div className={`${styles.message} ${styles.aiMessage}`}>
@@ -87,11 +87,14 @@ const ConversationList: React.FC<ConversationListProps> = ({
       );
     } else {
       const userMessage = message.message as UserMessage;
-      <div key={message.id} className={styles.messageContainer}>
-        <div className={`${styles.message} ${styles.userMessage}`}>
-          {userMessage.text}
+
+      return (
+        <div key={message.id} className={styles.messageContainer}>
+          <div className={`${styles.message} ${styles.userMessage}`}>
+            {userMessage.text}
+          </div>
         </div>
-      </div>;
+      );
     }
   });
 

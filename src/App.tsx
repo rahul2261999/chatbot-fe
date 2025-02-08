@@ -1,13 +1,12 @@
 import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import "./styles/globals.css";
-import Home from "./components/Home/home";
-
+import "@radix-ui/themes/styles.css";
+import Chat from "@components/chatscreen";
 
 function App() {
   return (
     <Theme appearance="light">
-      <Home />
+      <Chat />
     </Theme>
   );
 }

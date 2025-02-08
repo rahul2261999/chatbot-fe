@@ -2,7 +2,7 @@ import { AiAgentResponse, ChatResponse } from "./socket.type";
 
 export enum ChatMessageType {
   USER_MESSAGE = 'USER_MESSAGE',
-  AI_Agent_MESSAGE = 'AI_Agent_MESSAGE',
+  AI_AGENT_MESSAGE = 'AI_Agent_MESSAGE',
   SYSTEM_MESSAGE = 'SYSTEM_MESSAGE',
   LIVE_AGENT_MESSAGE = 'LIVE_AGENT_MESSAGE'
 }
