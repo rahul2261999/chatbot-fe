@@ -1,8 +1,11 @@
+
 :root,
 .light,
 .light-theme,
 .radix-themes {
   --color-background: #fff;
+  --primary-box-shadow: 0px 2px 4px rgba(106, 13, 173, 0.2),
+  0px 4px 10px rgba(106, 13, 173, 0.15)
 }
 
 :root,
@@ -151,4 +154,14 @@
       --gray-track: oklch(64.4% 0.003 17.23);
     }
   }
+}
+
+
+body {
+  margin: 0;
+}
+
+body * {
+  color: var(--purple-contrast);
+  font-family: 'Roboto', sans-serif;
 }

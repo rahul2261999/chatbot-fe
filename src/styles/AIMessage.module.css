@@ -2,7 +2,7 @@
   align-self: flex-start;
   width: 95%;
   max-width: 450px;
-  background: linear-gradient(135deg, #e6d8ff 0%, #f5f0ff 100%);
+  background: var;
   color: #333;
   border-radius: 12px;
   padding: 14px 18px;

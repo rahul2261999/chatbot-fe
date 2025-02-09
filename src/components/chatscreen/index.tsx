@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import ConversationList from "./ConversationList";
 import ChatInput from "./ChatInput";
-import styles from "../../styles/ChatWidget.module.css";
 import Constant from "../../constants/constant";
 import {
   AiAgentMessage,
@@ -13,6 +12,65 @@ import {
   UserMessage,
 } from "@/types/chat.type";
 import { AiAgentResponse } from "@/types/socket.type";
+import styled from "styled-components";
+
+const ChatMainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  right: 30px;
+  bottom: 20px;
+  max-width: 450px;
+
+  width: 100%;
+  max-width: 450px;
+
+  height: min(670px, 80vh);
+
+  background: var(--purple-12);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--primary-box-shadow);
+  margin: 1rem;
+
+  @media (min-width: 1200px) {
+    height: max(700px, 80vh);
+  }
+
+  /* Desktop */
+  @media (min-width: 992px) and (max-width: 1199px) {
+    height: min(670px, 80vh);
+  }
+
+  /* Tablet */
+  @media (min-width: 768px) and (max-width: 991px) {
+    max-width: 450px;
+    height: max(550px, 80vh);
+  }
+
+  /* Large Mobile */
+  @media (min-width: 481px) and (max-width: 767px) {
+    max-width: 400px;
+    height: max(500px, 85vh);
+    margin: 0.5rem;
+  }
+
+  /* Small Mobile */
+  @media (max-width: 480px) {
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+    margin: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  /* Handle landscape mode on mobile */
+  @media (max-height: 500px) and (orientation: landscape) {
+    height: 100vh;
+    max-width: 100%;
+  }
+`;
 
 const Chat: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(true);
@@ -104,27 +162,17 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        background: "#f0f0f0",
-      }}
-    >
-      <div className={styles.chatWidget}>
-        <Header title="AI Chat Assistant" />
-        <ConversationList
-          messages={chatMessages}
-          onIntentButtonClick={handleIntentButtonClick}
-        />
-        <ChatInput
-          disabled={loader}
-          onSendMessage={(text: string) => addMessage({ type: "text", text })}
-        />
-      </div>
-    </div>
+    <ChatMainContainer>
+      <Header title="AI Chat Assistant" />
+      <ConversationList
+        messages={chatMessages}
+        onIntentButtonClick={handleIntentButtonClick}
+      />
+      <ChatInput
+        disabled={loader}
+        onSendMessage={(text: string) => addMessage({ type: "text", text })}
+      />
+    </ChatMainContainer>
   );
 };
 

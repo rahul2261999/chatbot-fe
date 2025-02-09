@@ -1,9 +1,14 @@
 import React from 'react'
 import styles from '../../styles/Header.module.css'
+import styled from 'styled-components'
 
 interface HeaderProps {
   title: string
 }
+
+const HeaderConainer = styled.div`
+  
+`
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
