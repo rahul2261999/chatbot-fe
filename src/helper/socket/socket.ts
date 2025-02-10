@@ -61,15 +61,13 @@ class SocketClient {
   }
 
   sendMessage(data: ISendMesssgaPayload) {
-    this.socket.emit(Constant.Socket_Emit_Event.USER_MESSAGE, {
-      data: JSON.stringify(data),
-    });
+    this.socket.emit(Constant.Socket_Emit_Event.USER_MESSAGE, data);
   }
 
   receiveMessage() {
     this.socket.on(Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE, (data: AiAgentResponse) => {
       console.log("Socket Event: AGENT_MESSAGE");
-      
+
       const aiMessageEvent = new CustomEvent(
         Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE,
         { detail: data }
