@@ -22,7 +22,7 @@ class SocketClient {
     });
   }
 
-  init(options: SocketInitOptions) {
+  init(options?: SocketInitOptions) {
     this.socket.auth = options;
 
     if (!this.connectionEstablished) {
@@ -62,14 +62,14 @@ class SocketClient {
 
   sendMessage(data: ISendMesssgaPayload) {
     this.socket.emit(Constant.Socket_Emit_Event.USER_MESSAGE, {
-      data,
+      data: JSON.stringify(data),
     });
   }
 
   receiveMessage() {
     this.socket.on(Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE, (data: AiAgentResponse) => {
       console.log("Socket Event: AGENT_MESSAGE");
-
+      
       const aiMessageEvent = new CustomEvent(
         Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE,
         { detail: data }

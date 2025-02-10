@@ -14,6 +14,7 @@ import {
 import { AiAgentResponse } from "@/types/socket.type";
 import styled, { keyframes } from "styled-components";
 import ChatWidget from "./ChatWidget";
+import socket from "@helper/socket/socket";
 
 const fadeInUp = keyframes`
   from {
@@ -116,29 +117,31 @@ const Chat: React.FC = () => {
     receiveAiMessageEventHandler(event.detail);
 
   useEffect(() => {
+    socket.init();
     connectEventHandler();
     const quickReplies: QuickReplyButton[] = [
       {
-        label: "Get Started",
-        intent: "I want to know the post impression of last month",
+        label: "What Is Psoriasis",
+        intent: "What Is Psoriasis",
         action: (messageId: number, intent: string) =>
           handleIntentButtonClick(messageId, intent),
       },
       {
-        label: "Learn More",
-        intent: "I want to learn more",
+        label: "Psoriasis Symptoms",
+        intent: "Signs and Symptoms of Psoriasis",
         action: (messageId: number, intent: string) =>
           handleIntentButtonClick(messageId, intent),
       },
       {
-        label: "Get Started",
-        intent: "I want to know the post impression of last month",
+        label: "Types of Psoriasis",
+        intent: "I want to know the types of Psoriasis",
         action: (messageId: number, intent: string) =>
           handleIntentButtonClick(messageId, intent),
       },
       {
-        label: "Learn More",
-        intent: "I want to learn more",
+        label: "Tell me about the treatment",
+        intent:
+          "I want to learn about treatment and medication options for Psoriasis",
         action: (messageId: number, intent: string) =>
           handleIntentButtonClick(messageId, intent),
       },
@@ -189,7 +192,7 @@ const Chat: React.FC = () => {
 
     console.log("addMessage", newMessage);
     setChatMessages((prevMessages) => [...prevMessages, newMessage]);
-    // socket.sendMessage({ message: text });
+    socket.sendMessage({ message: data.text });
   };
 
   const handleIntentButtonClick = (messageId: number, intent: string) => {
@@ -226,6 +229,10 @@ const Chat: React.FC = () => {
 
       return newMessageList;
     });
+
+    socket.sendMessage({
+      message: intent
+    });
   };
 
   return (
@@ -233,9 +240,7 @@ const Chat: React.FC = () => {
       {chatWidget && (
         <ChatMainContainer isopen={chatWidget}>
           <Header title="Aura" />
-          <ConversationList
-            messages={chatMessages}
-          />
+          <ConversationList messages={loader ? [] : chatMessages} />
           <ChatInput
             disabled={loader}
             onSendMessage={(text: string) => addMessage({ type: "text", text })}
