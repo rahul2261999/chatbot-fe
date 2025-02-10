@@ -10,13 +10,18 @@ export enum ChatMessageType {
 export interface SystemMessage {
   type: 'text',
   text: string;
-  quickReplies?: QuickReplyButton[];
+  quickReplies?: quickReplies;
+}
+
+export interface quickReplies {
+  show: boolean;
+  buttons: QuickReplyButton[];
 }
 
 export interface QuickReplyButton {
   label: string;
   intent: string;
-  action: () => void;
+  action: (messageId: number, intent: string) => void;
 }
 
 export interface UserMessage {
@@ -26,7 +31,7 @@ export interface UserMessage {
 
 export interface AiAgentMessage {
   message: ChatResponse,
-  quickReplies?: QuickReplyButton[]
+  quickReplies?: quickReplies
 }
 
 export interface ChatMessage {

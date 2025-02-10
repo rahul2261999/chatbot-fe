@@ -18,6 +18,7 @@
       "@lib/*": ["./src/lib/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@helper/*": ["./src/helper/*"],
+      "@assets/*": ["./src/assets/*"],
       "@/*": ["./src/*"]
     }
   },

@@ -94,7 +94,7 @@ const QuickReplyContainer = styled.div`
 const QuickReplyButton = styled.button`
   min-width: clamp(100px, 25%, 120px);
   padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px);
-  margin: 0 8px 0 0;
+  margin: 0.4rem;
   background: var(--purple-3);
 
   font-size: clamp(0.8rem, 2vw, 0.9rem);
@@ -118,12 +118,10 @@ const QuickReplyButton = styled.button`
 
 interface ConversationListProps {
   messages: ChatMessage[];
-  onIntentButtonClick: (aliasText: string) => void;
 }
 
 const ConversationList: React.FC<ConversationListProps> = ({
   messages,
-  onIntentButtonClick,
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -139,18 +137,24 @@ const ConversationList: React.FC<ConversationListProps> = ({
           <AiMessageContainer>{systemMessage.text}</AiMessageContainer>
         );
 
-        const quickReplies = systemMessage.quickReplies?.map(
-          (quickReply, index) => {
-            return (
-              <QuickReplyButton
-                key={`msg-${message.id}-quick-reply-${index}`}
-                onClick={() => onIntentButtonClick(quickReply.intent)}
-              >
-                {quickReply.label}
-              </QuickReplyButton>
-            );
-          }
-        );
+        let quickReplies = [];
+
+        if (systemMessage.quickReplies && systemMessage.quickReplies.show) {
+          quickReplies = systemMessage.quickReplies.buttons.map(
+            (quickReply, index) => {
+              return (
+                <QuickReplyButton
+                  key={`msg-${message.id}-quick-reply-${index}`}
+                  onClick={() =>
+                    quickReply.action(message.id, quickReply.intent)
+                  }
+                >
+                  {quickReply.label}
+                </QuickReplyButton>
+              );
+            }
+          );
+        }
 
         return (
           <MessageContiner key={index}>
@@ -174,18 +178,24 @@ const ConversationList: React.FC<ConversationListProps> = ({
           </AiMessageContainer>
         );
 
-        const quickReplies = aiAgentMessage.quickReplies?.map(
-          (quickReply, index) => {
-            return (
-              <QuickReplyButton
-                key={`msg-${message.id}-quick-reply-${index}`}
-                onClick={() => onIntentButtonClick(quickReply.intent)}
-              >
-                {quickReply.label}
-              </QuickReplyButton>
-            );
-          }
-        );
+        let quickReplies = [];
+
+        if (aiAgentMessage.quickReplies && aiAgentMessage.quickReplies.show) {
+          quickReplies = aiAgentMessage.quickReplies.buttons.map(
+            (quickReply, index) => {
+              return (
+                <QuickReplyButton
+                  key={`msg-${message.id}-quick-reply-${index}`}
+                  onClick={() =>
+                    quickReply.action(message.id, quickReply.intent)
+                  }
+                >
+                  {quickReply.label}
+                </QuickReplyButton>
+              );
+            }
+          );
+        }
 
         return (
           <MessageContiner key={message.id}>

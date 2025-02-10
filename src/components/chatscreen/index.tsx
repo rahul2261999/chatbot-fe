@@ -12,26 +12,41 @@ import {
   UserMessage,
 } from "@/types/chat.type";
 import { AiAgentResponse } from "@/types/socket.type";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import ChatWidget from "./ChatWidget";
 
-const ChatMainContainer = styled.div`
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const ChatMainContainer = styled.div<{ isopen: boolean }>`
   display: flex;
   flex-direction: column;
+
   position: fixed;
   right: 30px;
-  bottom: 20px;
-  max-width: 450px;
+  bottom: 50px;
+  z-index: 1001;
 
+  max-width: 450px;
   width: 100%;
   max-width: 450px;
 
   height: min(670px, 80vh);
 
-  background: var(--purple-12);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--primary-box-shadow);
   margin: 1rem;
+
+  animation: ${fadeInUp} 0.3s ease-in-out;
 
   @media (min-width: 1200px) {
     height: max(700px, 80vh);
@@ -74,7 +89,7 @@ const ChatMainContainer = styled.div`
 
 const Chat: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(true);
-
+  const [chatWidget, setChatWidget] = useState<boolean>(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
   const connectEventHandler = () => {
@@ -106,18 +121,36 @@ const Chat: React.FC = () => {
       {
         label: "Get Started",
         intent: "I want to know the post impression of last month",
-        action: () => handleIntentButtonClick("I want to get started"),
+        action: (messageId: number, intent: string) =>
+          handleIntentButtonClick(messageId, intent),
       },
       {
         label: "Learn More",
         intent: "I want to learn more",
-        action: () => handleIntentButtonClick("I want to learn more"),
+        action: (messageId: number, intent: string) =>
+          handleIntentButtonClick(messageId, intent),
+      },
+      {
+        label: "Get Started",
+        intent: "I want to know the post impression of last month",
+        action: (messageId: number, intent: string) =>
+          handleIntentButtonClick(messageId, intent),
+      },
+      {
+        label: "Learn More",
+        intent: "I want to learn more",
+        action: (messageId: number, intent: string) =>
+          handleIntentButtonClick(messageId, intent),
       },
     ];
+
     const systemMessage: SystemMessage = {
       type: "text",
       text: "Hey there! I'm Aura, your AI assistant. How can I help you today?",
-      quickReplies,
+      quickReplies: {
+        show: true,
+        buttons: quickReplies,
+      },
     };
 
     const initialMessage: ChatMessage = {
@@ -127,6 +160,7 @@ const Chat: React.FC = () => {
     };
 
     setChatMessages([initialMessage]);
+    setChatWidget(false);
 
     document.addEventListener(
       Constant.Socket_Reciever_Event.AI_AGENT_MESSAGE,
@@ -142,6 +176,7 @@ const Chat: React.FC = () => {
       );
 
       setChatMessages([]);
+      setChatWidget(false);
     };
   }, []);
 
@@ -157,22 +192,61 @@ const Chat: React.FC = () => {
     // socket.sendMessage({ message: text });
   };
 
-  const handleIntentButtonClick = (aliasText: string) => {
-    addMessage({ type: "text", text: aliasText });
+  const handleIntentButtonClick = (messageId: number, intent: string) => {
+    setChatMessages((prevState) => {
+      const newMessageList = prevState.map((chatMessage) => {
+        if (
+          chatMessage.id === messageId &&
+          "quickReplies" in chatMessage.message
+        ) {
+          return {
+            ...chatMessage,
+            message: {
+              ...chatMessage.message,
+              quickReplies: {
+                ...chatMessage.message.quickReplies,
+                show: false,
+              },
+            },
+          };
+        }
+        return chatMessage;
+      });
+
+      const newMessage: ChatMessage = {
+        id: Date.now(),
+        type: ChatMessageType.USER_MESSAGE,
+        message: {
+          type: "text",
+          text: intent,
+        },
+      };
+
+      newMessageList.push(newMessage);
+
+      return newMessageList;
+    });
   };
 
   return (
-    <ChatMainContainer>
-      <Header title="AI Chat Assistant" />
-      <ConversationList
-        messages={chatMessages}
-        onIntentButtonClick={handleIntentButtonClick}
+    <>
+      {chatWidget && (
+        <ChatMainContainer isopen={chatWidget}>
+          <Header title="Aura" />
+          <ConversationList
+            messages={chatMessages}
+          />
+          <ChatInput
+            disabled={loader}
+            onSendMessage={(text: string) => addMessage({ type: "text", text })}
+          />
+        </ChatMainContainer>
+      )}
+      <ChatWidget
+        chatWidget={chatWidget}
+        toggleChatWidget={() => setChatWidget(!chatWidget)}
       />
-      <ChatInput
-        disabled={loader}
-        onSendMessage={(text: string) => addMessage({ type: "text", text })}
-      />
-    </ChatMainContainer>
+    </>
   );
 };
 
